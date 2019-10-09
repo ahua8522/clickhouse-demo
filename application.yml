@@ -1,0 +1,11 @@
+clickhouse.jdbc:
+  driverClassName: ru.yandex.clickhouse.ClickHouseDriver
+  jdbcUrl: jdbc:clickhouse://192.168.33.5:8123/credit_ind
+  username:
+  password:
+#  connectionTestQuery: SELECT 1 from dual
+  maximumPoolSize: 10
+  minimumIdle: 1
+  maxLifetime: 2000000
+  connectionTimeout: 30000
+  idleTimeout: 30000

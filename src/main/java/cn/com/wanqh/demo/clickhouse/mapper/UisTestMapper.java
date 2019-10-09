@@ -1,7 +1,7 @@
 package cn.com.wanqh.demo.clickhouse.mapper;
 
 /**
- * @author: bangsun
+ * @author: wanqh
  * @date: created in 2019/10/9 20:52
  * @version:
  * @since:

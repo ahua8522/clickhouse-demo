@@ -9,9 +9,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>cn.com.wanqh.demo</groupId>
-    <artifactId>clickhouse</artifactId>
+    <artifactId>clickhouse-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>clickhouse</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
