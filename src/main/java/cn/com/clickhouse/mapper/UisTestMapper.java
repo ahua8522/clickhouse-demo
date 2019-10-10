@@ -1,4 +1,7 @@
-package cn.com.wanqh.demo.clickhouse.mapper;
+package cn.com.clickhouse.mapper;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Service;
 
 /**
  * @author: wanqh
@@ -7,7 +10,7 @@ package cn.com.wanqh.demo.clickhouse.mapper;
  * @since:
  */
 public interface UisTestMapper {
-    int count();
+    int selectCount();
     /*-- 计算数值类型的最大最小值
 select max(indicator_value), min(indicator_value) from uid_ind_test where indicator_type='N';
 select max(indicator_value), min(indicator_value) from uid_ind_test where indicator_type='T';

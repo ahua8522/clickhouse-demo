@@ -1,4 +1,4 @@
-package cn.com.wanqh.demo.clickhouse;
+package cn.com.clickhouse;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,7 +1,7 @@
-package cn.com.wanqh.demo.clickhouse.service.imp;
+package cn.com.clickhouse.service.imp;
 
-import cn.com.wanqh.demo.clickhouse.mapper.UisTestMapper;
-import cn.com.wanqh.demo.clickhouse.service.UisTestService;
+import cn.com.clickhouse.mapper.UisTestMapper;
+import cn.com.clickhouse.service.UisTestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,6 @@ public class UisTestServiceImpl implements UisTestService {
     private UisTestMapper uisTestMapper;
     @Override
     public int count() {
-        return uisTestMapper.count();
+        return uisTestMapper.selectCount();
     }
 }

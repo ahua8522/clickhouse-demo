@@ -1,4 +1,4 @@
-package cn.com.wanqh.demo.clickhouse.service;
+package cn.com.clickhouse.service;
 
 public interface UisTestService {
     int count();

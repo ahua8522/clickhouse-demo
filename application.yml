@@ -1,11 +1,46 @@
-clickhouse.jdbc:
-  driverClassName: ru.yandex.clickhouse.ClickHouseDriver
-  jdbcUrl: jdbc:clickhouse://192.168.33.5:8123/credit_ind
-  username:
-  password:
-#  connectionTestQuery: SELECT 1 from dual
-  maximumPoolSize: 10
-  minimumIdle: 1
-  maxLifetime: 2000000
-  connectionTimeout: 30000
-  idleTimeout: 30000
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    click:
+      driverClassName: ru.yandex.clickhouse.ClickHouseDriver
+      url: jdbc:clickhouse://10.100.2.70:8123/credit_ind
+      username: default
+      password: root
+      initialSize: 10
+      maxActive: 100
+      minIdle: 10
+      maxWait: 6000
+
+# mybatis 配置
+mybatis:
+  type-aliases-package: cn.com.clickhouse.pojo
+  mapper-locations: classpath:/mapper/*.xml
+
+#clickhouse.jdbc:
+#  driverClassName: ru.yandex.clickhouse.ClickHouseDriver
+#  jdbcUrl: jdbc:clickhouse://10.100.2.70:8123/credit_ind
+#  username: default
+#  password: root
+##  connectionTestQuery: SELECT 1 from dual
+#  maximumPoolSize: 10
+#  minimumIdle: 1
+#  maxLifetime: 2000000
+#  connectionTimeout: 30000
+#  idleTimeout: 30000
+
+#spring:
+#  datasource:
+#    username: root
+#    password: bangsun
+#    url: jdbc:mysql://10.100.1.85:3306/credit_mgr600?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+#    driver-class-name: com.mysql.jdbc.Driver
+#spring:
+#  datasource:
+#    username:
+#    password:
+#    url: jdbc:clickhouse://10.100.2.70:8123/credit_ind
+#    driver-class-name: ru.yandex.clickhouse.ClickHouseDriver
+#
+#mybatis:
+#  mapper-locations: classpath:cn/com/wanqh/demo/clickhouse/mapper/*.xml
+#  type-aliases-package: cn.com.wanqh.demo
