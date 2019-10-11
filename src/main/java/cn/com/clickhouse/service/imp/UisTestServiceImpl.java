@@ -71,12 +71,21 @@ public class UisTestServiceImpl implements UisTestService {
         int i = RandomUtils.nextInt(indList.size() - 1);
         JSONObject jsonObject = (JSONObject)indList.get(i);
         UisTest uisTest = UisTest.builder().orderId("orderId" + String.valueOf(RandomUtils.nextInt(999999999)))
+                .objectPk("objectPk" + String.valueOf(RandomUtils.nextInt(999999999)))
                 .idNumber(String.valueOf(RandomUtils.nextInt(999999999)))
                 .phone(String.valueOf(RandomUtils.nextInt(999999999)))
                 .userName("userName" + String.valueOf(RandomUtils.nextInt(999999999)))
+                .transTime(date).workflowCode("workflowCode")
+                .workflowName("workflowName")
+                .bizChannel("bizChannel")
+                .bizCode("bizCode")
+                .bizChannelName("bizChannelame")
+                .bizName("bizName")
                 .indicatorType(jsonObject.getString("valueType"))
                 .indicatorName(jsonObject.getString("indiName"))
+                .indicatorAo("ao")
                 .indicatorValue("qqqqq")
+                .label(1)
                 .createTime(date).updateTime(date)
                 .build();
         return uisTest;
