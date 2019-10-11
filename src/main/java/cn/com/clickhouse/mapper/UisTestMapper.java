@@ -1,7 +1,11 @@
 package cn.com.clickhouse.mapper;
 
+import cn.com.clickhouse.pojo.UisTest;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author: wanqh
@@ -11,6 +15,10 @@ import org.springframework.stereotype.Service;
  */
 public interface UisTestMapper {
     int selectCount();
+
+    void insertJson(@Param("jsonString")String jsonString);
+
+    void insertBath(@Param("indList") List<UisTest> indList);
     /*-- 计算数值类型的最大最小值
 select max(indicator_value), min(indicator_value) from uid_ind_test where indicator_type='N';
 select max(indicator_value), min(indicator_value) from uid_ind_test where indicator_type='T';
