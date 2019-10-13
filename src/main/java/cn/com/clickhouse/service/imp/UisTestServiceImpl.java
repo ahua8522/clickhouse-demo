@@ -88,7 +88,7 @@ public class UisTestServiceImpl implements UisTestService {
             }
         }
 
-        return between * dayNum;
+        return between+1 * dayNum;
     }
 
     private UisTest getInsertInd(Date date) {
