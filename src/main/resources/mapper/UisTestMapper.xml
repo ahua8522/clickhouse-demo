@@ -17,7 +17,7 @@
       workflow_code, workflow_name, biz_name,
       biz_channel_name, label, indicator_type,
       indicator_name, create_time, update_time,
-      indicator_name)
+      indicator_value)
     values
     <foreach collection="indList" item="item" index= "index" separator =",">
     (#{item.objectPk,jdbcType=VARCHAR}, #{item.orderId,jdbcType=VARCHAR}, #{item.bizCode,jdbcType=VARCHAR},

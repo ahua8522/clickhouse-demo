@@ -3,9 +3,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     click:
       driverClassName: ru.yandex.clickhouse.ClickHouseDriver
-      url: jdbc:clickhouse://10.100.2.70:8123/credit_ind
-      username: default
-      password: root
+      url: jdbc:clickhouse://192.168.33.5:8123/credit_ind
+#      username: default
+#      password: root
       initialSize: 10
       maxActive: 100
       minIdle: 10
