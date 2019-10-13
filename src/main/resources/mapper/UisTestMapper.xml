@@ -3,15 +3,15 @@
 <mapper namespace="cn.com.clickhouse.mapper.UisTestMapper">
 
     <select id="selectCount" resultType="int">
-        select count() from uid_ind_test;
+        select count() from uis_ind_all;
     </select>
 
     <insert id="insertJson" parameterType="java.lang.String">
-        insert into uid_ind_test format  JSONEachRow #{jsonString};
+        insert into uis_ind_all format  JSONEachRow #{jsonString};
     </insert>
 
     <insert id="insertBath" parameterType="cn.com.clickhouse.pojo.UisTest" >
-        insert into  uid_ind_test(object_pk, order_id, biz_code,
+        insert into  uis_ind_all(object_pk, order_id, biz_code,
       biz_channel, indicator_ao, id_number,
       user_name, phone, trans_time,
       workflow_code, workflow_name, biz_name,
