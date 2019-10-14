@@ -1,35 +1,25 @@
 package cn.com.clickhouse.service.imp;
 
-import ch.qos.logback.core.util.FileUtil;
 import cn.com.clickhouse.mapper.UisTestMapper;
 import cn.com.clickhouse.pojo.UisTest;
 import cn.com.clickhouse.service.UisTestService;
+import cn.com.clickhouse.uitil.FileUtils;
 import cn.hutool.core.date.*;
 import cn.hutool.core.util.RandomUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.collect.Lists;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,20 +33,12 @@ public class UisTestServiceImpl implements UisTestService {
     private JSONArray indList;
     @Override
     public void loadIndData() throws Exception {
-        @Cleanup
-        FileOutputStream fos = null;
         try {
-            URL resource = this.getClass().getClassLoader().getResource("ind.json");
-            File file = new File(resource.toURI());
-            FileInputStream fileInputStream = new FileInputStream(file);
-            JSONObject jsonObject = JSONObject.parseObject(IOUtils.toString(fileInputStream, "UTF-8"));
+            String s = FileUtils.readClassPathFile("ind.json");
+            JSONObject jsonObject = JSONObject.parseObject(s);
             indList = (JSONArray)jsonObject.get("dmIndicators");
             log.info("ind size:[{}]", indList.size());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
