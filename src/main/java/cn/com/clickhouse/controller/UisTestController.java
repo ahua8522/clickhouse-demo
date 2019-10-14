@@ -38,7 +38,7 @@ public class UisTestController {
                          @RequestParam(value = "endDate", required = false) Date endDate,
                          @RequestParam(value = "dayNum", defaultValue = "10000", required = false) Integer dayNum){
         if(startDate == null) {
-            startDate = DateUtils.addYears(new Date(), 3);
+            startDate = DateUtils.addYears(new Date(), -2);
         }
         if(endDate == null) {
             endDate = DateUtils.addDays(new Date(), 1);

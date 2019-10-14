@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: wanqh
@@ -19,6 +20,7 @@ public interface UisTestMapper {
     void insertJson(@Param("jsonString")String jsonString);
 
     void insertBath(@Param("indList") List<UisTest> indList);
+
     /*-- 计算数值类型的最大最小值
 select max(indicator_value), min(indicator_value) from uid_ind_test where indicator_type='N';
 select max(indicator_value), min(indicator_value) from uid_ind_test where indicator_type='T';

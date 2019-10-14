@@ -76,7 +76,7 @@ public class UisTestServiceImpl implements UisTestService {
                 Integer size = 0;
                 for(int j = 0; j < dayNum; j++) {
                     uisTests.add(getInsertInd(date));
-                    if((j!=0 && j%5000==0) || j == dayNum-1){
+                    if((j!=0 && j%3000==0) || j == dayNum-1){
                         uisTests = uisTests.stream().sorted(Comparator.comparing(UisTest::getIndicatorType)).collect(Collectors.toList());
                         size += uisTests.size();
                         log.info("size:[{}]", uisTests.size());
@@ -160,18 +160,5 @@ public class UisTestServiceImpl implements UisTestService {
         return dateTime;
     }
 
-    public static void main(String[] args) {
-        Connection conn = null;
-        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//            Class.forName("ru.yandex.clickhouse.ClickHouseDriver");
-//            Connection connection = DriverManager.getConnection("jdbc:clickhouse://192.168.33.5:8123/credit_ind");
-//            String sql = "insert into  uid_ind_test(object_pk, order_id, biz_code,biz_channel, indicator_ao, id_number," +
-//                    "user_name, phone, trans_time,workflow_code, workflow_name, biz_name,biz_channel_name, label, indicator_type," +
-//                    "indicator_name, create_time, update_time,indicator_value) values " +
-//                    "    (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-//        ps = conn.prepareStatement(sql);
-            //优化插入第一步设置手动提交
-    }
 
 }

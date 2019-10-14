@@ -1,3 +1,5 @@
+server:
+  port: 8090
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -15,6 +17,13 @@ spring:
 mybatis:
   type-aliases-package: cn.com.clickhouse.pojo
   mapper-locations: classpath:/mapper/*.xml
+
+#指标直方图空值设置，多个请使用英文逗号（,）分隔
+frms.monitor.indicator.empty.list: NULL,-999999
+
+logging:
+  level:
+    cn.com.clickhouse.mapper.IndicatorAnalysisMapper: DEBUG
 
 #clickhouse.jdbc:
 #  driverClassName: ru.yandex.clickhouse.ClickHouseDriver
