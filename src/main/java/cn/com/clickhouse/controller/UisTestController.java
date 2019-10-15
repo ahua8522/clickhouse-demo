@@ -4,6 +4,7 @@ import cn.com.clickhouse.pojo.UisTest;
 import cn.com.clickhouse.service.UisTestService;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/test")
+@Slf4j
 public class UisTestController {
 
     @Autowired
@@ -26,7 +28,8 @@ public class UisTestController {
     @PostConstruct
     private void loadIndData() throws Exception {
         uisTestService.loadIndData();
-        getList();
+        int list = getList();
+        log.info("Data size:[{}]", list);
     }
 
     @GetMapping("/getList")
