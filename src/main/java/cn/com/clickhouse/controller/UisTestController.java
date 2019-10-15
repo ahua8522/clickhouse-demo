@@ -26,6 +26,7 @@ public class UisTestController {
     @PostConstruct
     private void loadIndData() throws Exception {
         uisTestService.loadIndData();
+        getList();
     }
 
     @GetMapping("/getList")

@@ -4,6 +4,7 @@ import cn.com.clickhouse.mapper.UisTestMapper;
 import cn.com.clickhouse.pojo.UisTest;
 import cn.com.clickhouse.service.UisTestService;
 import cn.com.clickhouse.uitil.FileUtils;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.*;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONArray;
@@ -15,12 +16,18 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 
@@ -29,8 +36,15 @@ import java.util.stream.Collectors;
 public class UisTestServiceImpl implements UisTestService {
     @Autowired
     private UisTestMapper uisTestMapper;
+    @Autowired
+    private ThreadPoolExecutor insertBathPool;
+
+    @Autowired(required = false)
+    @Qualifier("insertDataQueues")
+    private BlockingQueue<List<UisTest>> insertDataQueues;
 
     private JSONArray indList;
+
     @Override
     public void loadIndData() throws Exception {
         try {
@@ -53,24 +67,70 @@ public class UisTestServiceImpl implements UisTestService {
         long between = DateUtil.between(startDate, entDate, DateUnit.DAY);
         if(between > 0) {
             for(int i=0; i <= between; i++) {
-                List<UisTest> uisTests = Lists.newArrayList(getInsertInd(startDate), getInsertInd(new Date()));
                 Date date = DateUtils.addDays(startDate, i);
-                Integer size = 0;
-                for(int j = 0; j < dayNum; j++) {
+                List<UisTest> uisTests = Lists.newArrayList();
+                for(int j = 0; j < dayNum; j ++ ) {
                     uisTests.add(getInsertInd(date));
-                    if((j!=0 && j%3000==0) || j == dayNum-1){
-                        uisTests = uisTests.stream().sorted(Comparator.comparing(UisTest::getIndicatorType)).collect(Collectors.toList());
-                        size += uisTests.size();
-                        log.info("size:[{}]", uisTests.size());
-                        uisTestMapper.insertBath(uisTests);
+//                    try {
+//                        insertDataQueues.put(Lists.newArrayList(getInsertInd(date)));
+//                    } catch (InterruptedException e) {
+//                        log.error("插入Queue失败！", e);
+//                    }
+                    if((j != 0 && j%5000 ==0) || j == dayNum-1){
+                        List<UisTest> objects = Lists.newArrayList();
+                        objects.addAll(uisTests);
                         uisTests.clear();
+                        try {
+                            insertDataQueues.put(objects);
+//                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            log.error("插入Queue失败！", e);
+                        }
                     }
                 }
-                log.info("insert date:[{}],size:[{}]", DateUtil.format(date, DatePattern.NORM_DATE_PATTERN),size);
             }
         }
+        return (between+1) * dayNum;
+    }
 
-        return between+1 * dayNum;
+    @PostConstruct
+    public void listenerDataChange() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                log.info("开始监听Queue中数据变化！");
+                while (true) {
+                    try {
+                        List<UisTest> take = insertDataQueues.take();
+                        if(CollUtil.isNotEmpty(take)) {
+                            insertBathPool.execute(new InsertBathThread(take));
+                        }
+                    } catch (InterruptedException e) {
+                        log.error("从Queue中获取数据失败！", e);
+                    }
+                }
+
+            }
+        }).start();
+    }
+
+    class InsertBathThread implements Runnable {
+        private List<UisTest> uisTests;
+
+        public InsertBathThread(List<UisTest> uisTests) {
+            this.uisTests = uisTests;
+        }
+
+        @Override
+        public void run() {
+            try {
+                uisTests = uisTests.stream().sorted(Comparator.comparing(UisTest::getIndicatorName)).sorted(Comparator.comparing(UisTest::getLabel)).collect(Collectors.toList());
+                uisTestMapper.insertBath(uisTests);
+                log.info("Thread:[{}], size:[{}]", Thread.currentThread().getName(), uisTests.size());
+            } catch (Exception e) {
+                log.error("插入失败！", e);
+            }
+        }
     }
 
     private UisTest getInsertInd(Date date) {

@@ -8,7 +8,7 @@ spring:
       url: jdbc:clickhouse://10.100.2.70:8124/credit_ind
       username: default
       password: root
-      initialSize: 10
+      initialSize: 50
       maxActive: 100
       minIdle: 10
       maxWait: 6000
@@ -24,6 +24,9 @@ frms.monitor.indicator.empty.list: NULL,-999999
 logging:
   level:
     cn.com.clickhouse.mapper.IndicatorAnalysisMapper: DEBUG
+
+insertDataQueueSize: 100
+insertBathPoolSize: 5
 
 #clickhouse.jdbc:
 #  driverClassName: ru.yandex.clickhouse.ClickHouseDriver
