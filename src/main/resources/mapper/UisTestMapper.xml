@@ -12,7 +12,7 @@
     </insert>
 
     <insert id="insertBath" parameterType="cn.com.clickhouse.pojo.UisTest">
-        insert into uis_ind_all(object_pk, order_id, biz_code,
+        insert into uis_ind_all (object_pk, order_id, biz_code,
         biz_channel, indicator_ao, id_number,
         user_name, phone, trans_time,
         workflow_code, workflow_name, biz_name,
@@ -31,7 +31,7 @@
         </foreach>
     </insert>
 
-    <select id="getIndicatorType" resultType="java.lang.String" parameterType="java.util.Map" >
+<!--    <select id="getIndicatorType" resultType="java.lang.String" parameterType="java.util.Map" >
         select distinct indicator_type from uis_ind_all
         <include refid="Search_Where_Clause_Indi"/>
         and indicator_type is not null
@@ -152,6 +152,6 @@
                 AND phone = #{phone,jdbcType=VARCHAR}
             </if>
         </where>
-    </sql>
+    </sql>-->
 </mapper>
 

@@ -26,7 +26,7 @@ logging:
     cn.com.clickhouse.mapper.IndicatorAnalysisMapper: DEBUG
 
 insertDataQueueSize: 100
-insertBathPoolSize: 5
+insertBathPoolSize: 1
 
 #clickhouse.jdbc:
 #  driverClassName: ru.yandex.clickhouse.ClickHouseDriver

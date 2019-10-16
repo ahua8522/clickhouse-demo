@@ -73,19 +73,20 @@ public class UisTestServiceImpl implements UisTestService {
                     uisTests.add(getInsertInd(date));
 //                    try {
 //                        insertDataQueues.put(Lists.newArrayList(getInsertInd(date)));
-//                    } catch (InterruptedException e) {
+//                    } catch (IntwwerruptedException e) {
 //                        log.error("插入Queue失败！", e);
 //                    }
-                    if((j != 0 && j%5000 ==0) || j == dayNum-1){
-                        List<UisTest> objects = Lists.newArrayList();
-                        objects.addAll(uisTests);
+                    if((j != 0 && j%3000 ==0) || j == dayNum-1){
+                        List<UisTest> objects = uisTests.stream().sorted(Comparator.comparing(UisTest::getIndicatorName)).sorted(Comparator.comparing(UisTest::getLabel)).collect(Collectors.toList());
+                        log.info("Date:[{}], Size:[{}]", DateUtil.format(date, DatePattern.NORM_DATE_FORMAT), objects.size());
+                        uisTestMapper.insertBath(objects);
                         uisTests.clear();
-                        try {
-                            insertDataQueues.put(objects);
-//                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            log.error("插入Queue失败！", e);
-                        }
+//                        try {
+//                            insertDataQueues.put(objects);
+////                            Thread.sleep(100);
+//                        } catch (InterruptedException e) {
+//                            log.error("插入Queue失败！", e);
+//                        }
                     }
                 }
             }
@@ -93,7 +94,7 @@ public class UisTestServiceImpl implements UisTestService {
         return (between+1) * dayNum;
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void listenerDataChange() {
         new Thread(new Runnable() {
             @Override
