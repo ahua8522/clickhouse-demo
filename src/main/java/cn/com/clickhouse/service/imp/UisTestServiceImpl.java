@@ -17,11 +17,13 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
@@ -44,6 +46,9 @@ public class UisTestServiceImpl implements UisTestService {
     private BlockingQueue<List<UisTest>> insertDataQueues;
 
     private JSONArray indList;
+
+    @Value("${insertNum:5000}")
+    private Integer insertNum;
 
     @Override
     public void loadIndData() throws Exception {
@@ -76,7 +81,7 @@ public class UisTestServiceImpl implements UisTestService {
 //                    } catch (IntwwerruptedException e) {
 //                        log.error("插入Queue失败！", e);
 //                    }
-                    if((j != 0 && j%3000 ==0) || j == dayNum-1){
+                    if((j != 0 && j% insertNum ==0) || j == dayNum-1){
                         List<UisTest> objects = uisTests.stream().sorted(Comparator.comparing(UisTest::getIndicatorName)).sorted(Comparator.comparing(UisTest::getLabel)).collect(Collectors.toList());
                         log.info("Date:[{}], Size:[{}]", DateUtil.format(date, DatePattern.NORM_DATE_FORMAT), objects.size());
                         uisTestMapper.insertBath(objects);
