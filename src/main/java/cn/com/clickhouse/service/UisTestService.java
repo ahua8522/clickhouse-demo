@@ -1,10 +1,6 @@
 package cn.com.clickhouse.service;
 
-import cn.com.clickhouse.pojo.UisTest;
-
-import javax.xml.crypto.Data;
 import java.util.Date;
-import java.util.List;
 
 public interface UisTestService {
 
@@ -12,5 +8,5 @@ public interface UisTestService {
 
     int count();
 
-    long insert(Date startDate, Date entDate, Integer dayNum);
+    void insert(Date startDate, Date entDate, Integer dayNum);
 }

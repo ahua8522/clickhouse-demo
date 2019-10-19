@@ -1,5 +1,6 @@
 package cn.com.clickhouse.service.imp;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import cn.com.clickhouse.mapper.UisTestMapper;
 import cn.com.clickhouse.pojo.UisTest;
 import cn.com.clickhouse.service.UisTestService;
@@ -10,9 +11,7 @@ import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +19,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import java.io.*;
-import java.math.BigDecimal;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
@@ -68,35 +60,32 @@ public class UisTestServiceImpl implements UisTestService {
     }
 
     @Override
-    public long insert(Date startDate, Date entDate, Integer dayNum) {
+    public void insert(Date startDate, Date entDate, Integer dayNum) {
         long between = DateUtil.between(startDate, entDate, DateUnit.DAY);
         if(between > 0) {
-            for(int i=0; i <= between; i++) {
-                Date date = DateUtils.addDays(startDate, i);
-                List<UisTest> uisTests = Lists.newArrayList();
-                for(int j = 0; j < dayNum; j ++ ) {
-                    uisTests.add(getInsertInd(date));
-//                    try {
-//                        insertDataQueues.put(Lists.newArrayList(getInsertInd(date)));
-//                    } catch (IntwwerruptedException e) {
-//                        log.error("插入Queue失败！", e);
-//                    }
-                    if((j != 0 && j% insertNum ==0) || j == dayNum-1){
-                        List<UisTest> objects = uisTests.stream().sorted(Comparator.comparing(UisTest::getIndicatorName)).sorted(Comparator.comparing(UisTest::getLabel)).collect(Collectors.toList());
-                        log.info("Date:[{}], Size:[{}]", DateUtil.format(date, DatePattern.NORM_DATE_FORMAT), objects.size());
-                        uisTestMapper.insertBath(objects);
-                        uisTests.clear();
-//                        try {
-//                            insertDataQueues.put(objects);
-////                            Thread.sleep(100);
-//                        } catch (InterruptedException e) {
-//                            log.error("插入Queue失败！", e);
-//                        }
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for(int i=0; i <= between; i++) {
+                        Date date = DateUtils.addDays(startDate, i);
+                        List<UisTest> uisTests = Lists.newArrayList();
+                        for(int j = 0; j < dayNum; j ++ ) {
+                            uisTests.add(getInsertInd(date));
+                            if((j != 0 && j% insertNum ==0) || j == dayNum-1){
+                                List<UisTest> objects = uisTests.stream().sorted(Comparator.comparing(UisTest::getIndicatorName)).sorted(Comparator.comparing(UisTest::getLabel)).collect(Collectors.toList());
+                                log.info("Date:[{}], Size:[{}]", DateUtil.format(date, DatePattern.NORM_DATE_FORMAT), objects.size());
+                                try {
+                                    uisTestMapper.insertBath(objects);
+                                } catch (Exception e) {
+                                    log.error("插入失败！", e);
+                                }
+                                uisTests.clear();
+                            }
+                        }
                     }
                 }
-            }
+            }).start();
         }
-        return (between+1) * dayNum;
     }
 
 //    @PostConstruct

@@ -47,7 +47,8 @@ public class UisTestController {
         if(endDate == null) {
             endDate = DateUtils.addDays(new Date(), 1);
         }
-        return JSONArray.toJSONString(uisTestService.insert(startDate, endDate, dayNum));
+        uisTestService.insert(startDate, endDate, dayNum);
+        return "success";
     }
 
     @InitBinder
