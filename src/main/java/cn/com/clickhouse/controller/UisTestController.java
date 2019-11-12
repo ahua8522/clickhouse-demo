@@ -1,9 +1,6 @@
 package cn.com.clickhouse.controller;
 
-import cn.com.clickhouse.pojo.UisTest;
 import cn.com.clickhouse.service.UisTestService;
-import cn.hutool.core.date.DateUtil;
-import com.alibaba.fastjson.JSONArray;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.web.context.request.WebRequest;
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @RestController
 @RequestMapping("/test")
@@ -28,12 +24,12 @@ public class UisTestController {
     @PostConstruct
     private void loadIndData() throws Exception {
         uisTestService.loadIndData();
-        int list = getList();
+        long list = getList();
         log.info("Data size:[{}]", list);
     }
 
     @GetMapping("/getList")
-    public int getList() {
+    public long getList() {
         return uisTestService.count();
     }
 

@@ -10,7 +10,7 @@
     </select>
 
     <select id="getMinMaxValue" resultType="java.util.Map" parameterType="java.util.Map" >
-        select min(indicator_value) as "min",max(indicator_value) as "max"
+        select min(toUInt64(indicator_value)) as "min",max(toUInt64(indicator_value)) as "max"
         from uis_ind_all
         <include refid="Search_Where_Clause_Indi"/>
         and indicator_value is not null
@@ -80,6 +80,7 @@
         from uis_ind_all
         <include refid="Search_Where_Clause_Indi"/>
         ) a group by a.indicator_value
+        <include refid="MysqlSuffix" />
     </select>
 
 
@@ -123,6 +124,12 @@
                 AND phone = #{phone,jdbcType=VARCHAR}
             </if>
         </where>
+    </sql>
+
+    <sql id="MysqlSuffix" >
+        <if test="start != null and limit != null" >
+            <![CDATA[ limit #{start} , #{limit} ]]>
+        </if>
     </sql>
 </mapper>
 

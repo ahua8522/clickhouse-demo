@@ -172,8 +172,16 @@ public class IndicatorAnalysisBOImpl implements IndicatorAnalysisBO {
 					Map<String,Object> ind = new HashMap<String,Object>();
 					if(!StringUtils.isEmpty(intervalItme.getIntervalName())){
 						try{
-							Long intervalName = Long.parseLong(intervalItme.getIntervalName());
-							ind.put("product", DateUtil.formateTime(new Date(intervalName),DateUtil.TYPE_DATE));
+							if(intervalItme.getIntervalName().contains("-")) {
+								Long intervalName1 = Long.parseLong(intervalItme.getIntervalName().split("-")[0]);
+								Long intervalName2 = Long.parseLong(intervalItme.getIntervalName().split("-")[0]);
+								ind.put("product", DateUtil.formateTime(new Date(intervalName1),DateUtil.TYPE_DATETIME) + "-" + DateUtil.formateTime(new Date(intervalName2),DateUtil.TYPE_DATETIME));
+
+							} else {
+								Long intervalName = Long.parseLong(intervalItme.getIntervalName());
+								ind.put("product", DateUtil.formateTime(new Date(intervalName),DateUtil.TYPE_DATE));
+							}
+
 						}catch(NumberFormatException e){
 							log.error("时间类型指标日期格式转换失败:{}",e);
 						}

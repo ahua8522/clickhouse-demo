@@ -6,7 +6,7 @@ public interface UisTestService {
 
     void loadIndData() throws Exception;
 
-    int count();
+    long count();
 
     void insert(Date startDate, Date entDate, Integer dayNum);
 }

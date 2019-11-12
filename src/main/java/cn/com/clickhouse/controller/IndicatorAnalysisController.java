@@ -80,6 +80,7 @@ public class IndicatorAnalysisController {
 				String indname = indnameObj.toString().replace("<a href=\"javascript:void(0);\">", "").replace("<a>", "");
 				paramsMap.put("indname", indname);
 				typelist = indicatorAnalysisBO.getIndicatorType(paramsMap);
+				log.info("指标名称:[{}]，指标输出类型:[{}:{}]", indname, typelist.get(0), IndicatorTypeEnum.getTextByCode(typelist.get(0)));
 				if(typelist==null || typelist.size()==0){
 					return ExtJSResponse.errorRes("该指标类型或指标数据为空");
 				}else if(typelist.size()>1){

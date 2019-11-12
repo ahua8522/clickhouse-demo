@@ -15,7 +15,7 @@ import java.util.Map;
  * @since:
  */
 public interface UisTestMapper {
-    int selectCount();
+    long selectCount();
 
     void insertJson(@Param("jsonString")String jsonString);
 

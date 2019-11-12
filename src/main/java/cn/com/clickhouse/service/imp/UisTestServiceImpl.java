@@ -55,7 +55,7 @@ public class UisTestServiceImpl implements UisTestService {
     }
 
     @Override
-    public int count() {
+    public long count() {
         return uisTestMapper.selectCount();
     }
 
